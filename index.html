@@ -17,7 +17,10 @@
 	window.onload = function()
 	{
 		var div = document.getElementById('result');
-		
+		var direccion = document.getElementById('direccion');
+		var go = document.getElementById('go');
+		var geocoder = new google.maps.Geocoder();
+		go.onclick = codeAddress;
 	};
 	
 	document.addEventListener("deviceready",function()
@@ -29,7 +32,7 @@
 	
 	function mirando(posicion)
 	{
-		result.innerHTML = "Latitud " + posicion.coords.latitude + ". Longitud " + posicion.coords.longitude;
+		//result.innerHTML = "Latitud " + posicion.coords.latitude + ". Longitud " + posicion.coords.longitude;
 		var currentLatLng = new google.maps.LatLng(posicion.coords.latitude, posicion.coords.longitude);
 		var mapOptions = {};
 		var mapOptions = 
@@ -42,6 +45,9 @@
 		//imprimo el mapa en el div y le paso como parametro las opciones definidas arriba.
 		var map = new google.maps.Map(document.getElementById("map_canvas"),mapOptions);
 		
+		/* INTENTO DE PONER VARIOS MARCADOES DE UNA */
+		/*
+
 		//defino los marcadores
 		var markers = [
 			['Destino', '-38.442157', '-63.622274', 'dest.png'],
@@ -65,10 +71,10 @@
 		}
 
 
+		*/
 
 
-
-		/*
+		
 
 		//le pongo el marcador actual
 		var marker = new google.maps.Marker({
@@ -77,6 +83,7 @@
 	      title: 'Posicion Actual'
 	  	});
 	  	
+	  	/*
 	  	//le pongo el marcador de destino
 		var dest = 'dest.png';
 		var plaza = new google.maps.LatLng(-38.442157,-63.622274);
@@ -94,16 +101,48 @@
 		alert('No se pudo ubicar');
 	}
 
+	function codeAddress()
+	{
+		//ejecuto el metodo geocode de gmaps que recibe 2 parametros, la direccion y una función que va a evaluar la respuesta 
+		geocoder.geocode( {'address': direccion.value}, 
+						function(resultado, status)
+						{
+							//si la respuesta es ok
+							if(status == google.maps.GeocoderStatus.OK)
+							{
+								//centro el mapa en la dire y agrego un marcador
+								map.setCenter(resultado[0].geometry.location);
+						        var marker = new google.maps.Marker({
+						            map: map,
+						            position: resultado[0].geometry.location
+						        });
+						        var msg = document.getElementById('msg');
+								msg.innerHTML = "La direccion se encontro con exito. Asegurate de que sea la que buscas";
+							}
+							else
+							{
+								var msg = document.getElementById('msg');
+								msg.innerHTML = "No podemos encontrar la direcci&oacute;n, error: " + status;
+							}
+						}
+						);
+	}
+
+
+
     </script>
   </head>
   <body>
     <div id="result"></div>
-	<label for="direccion">Ingresa el destino</label>
-	<input type="text" id="direccion">
+    <form>
+		<label for="direccion">Ingresa el destino</label>
+		<input type="text" id="direccion">
+		<button id="go">Go!</button>
+	</form>
     <div id="map_canvas" style="width: 100%; height: 50%">
 		
 	</div>
 	
-   
+	<p id="msg"></p>
   </body>
 </html>
