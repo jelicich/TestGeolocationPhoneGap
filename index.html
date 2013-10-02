@@ -22,28 +22,47 @@
 	
 	document.addEventListener("deviceready",function()
 	{
-		navigator.geolocation.getCurrentPosition(function(posicion)
-		{
-			result.innerHTML = "Latitud " + posicion.coords.latitude + ". Longitud " + posicion.coords.longitude;
-			var mapOptions = {};
-			var mapOptions = 
-			{
-				center: new google.maps.LatLng(posicion.coords.latitude, posicion.coords.longitude),
-				zoom: 13,
-				mapTypeId: google.maps.MapTypeId.ROADMAP
-			};
-			//imprimo el mapa en el div y le paso como parametro las opciones definidas arriba.
-			var map = new google.maps.Map(document.getElementById("map_canvas"),
-			mapOptions);
-		},function()
-		{
-			alert('No se pudo ubicar');
-		});
-		//acelerometroID = navigator.accelerometer.watchAcceleration(acelera, error);
+		navigator.geolocation.watchPosition(mirando, error, {frequency: 1000});
+
 	}, false);
 	
 	
-	
+	function mirando(posicion)
+	{
+		result.innerHTML = "Latitud " + posicion.coords.latitude + ". Longitud " + posicion.coords.longitude;
+		var currentLatLng = new google.maps.LatLng(posicion.coords.latitude, posicion.coords.longitude);
+		var mapOptions = {};
+		var mapOptions = 
+		{
+			center: currentLatLng,
+			zoom: 13,
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
+		
+		//imprimo el mapa en el div y le paso como parametro las opciones definidas arriba.
+		var map = new google.maps.Map(document.getElementById("map_canvas"),mapOptions);
+		
+		//le pongo el marcador actual
+		var marker = new google.maps.Marker({
+	      position: currentLatLng,
+	      map: map,
+	      title: 'Posicion Actual'
+	  	});
+	  	
+	  	//le pongo el marcador de destino
+		var dest = 'dest.png';
+		var plaza = new google.maps.LatLng(-38.442157,-63.622274);
+	  	var beachMarker = new google.maps.Marker({
+		      position: plaza
+		      map: map,
+		      icon: dest
+		  });
+	}
+
+	function error()
+	{
+		alert('No se pudo ubicar');
+	}
 
     </script>
   </head>
