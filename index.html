@@ -78,7 +78,7 @@
 		var marker = new google.maps.Marker({
 	      position: currentLatLng,
 	      map: map,
-	      icon: 'actual.png',
+	      icon: 'img/actual.png',
 	      title: 'Posicion Actual'
 	  	});
 	  	
@@ -115,7 +115,7 @@
 								map.setCenter(resultado[0].geometry.location);
 						        var markerDest = new google.maps.Marker({
 						            map: map,
-						            icon: 'dest.png',
+						            icon: 'img/dest.png',
 						            position: resultado[0].geometry.location
 						        });
 						        msg.innerHTML = "La direccion se encontro con exito. Asegurate de que sea la que buscas";
