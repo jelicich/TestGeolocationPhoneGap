@@ -19,16 +19,14 @@
 	{
 		var div = document.getElementById('result');
 		var direccion = document.getElementById('direccion');
+		var go = document.getElementById('go');
+		go.onclick = codeAddress;
 		
 	};
 	
 	document.addEventListener("deviceready",function()
 	{
 		navigator.geolocation.watchPosition(mirando, error, {frequency: 1000});
-		var go = document.getElementById('go');
-		var geocoder = new google.maps.Geocoder();
-		go.onclick = codeAddress;
-
 	}, false);
 	
 	
@@ -45,7 +43,7 @@
 		};
 		
 		//imprimo el mapa en el div y le paso como parametro las opciones definidas arriba.
-		var map = new google.maps.Map(document.getElementById("map_canvas"),mapOptions);
+		map = new google.maps.Map(document.getElementById("map_canvas"),mapOptions);
 		
 		/* INTENTO DE PONER VARIOS MARCADOES DE UNA */
 		/*
@@ -76,12 +74,11 @@
 		*/
 
 
-		
-
 		//le pongo el marcador actual
 		var marker = new google.maps.Marker({
 	      position: currentLatLng,
 	      map: map,
+	      icon: 'actual.png',
 	      title: 'Posicion Actual'
 	  	});
 	  	
@@ -105,25 +102,27 @@
 
 	function codeAddress()
 	{
+		var geocoder = new google.maps.Geocoder();
+		var msg = document.getElementById('msg');
 		//ejecuto el metodo geocode de gmaps que recibe 2 parametros, la direccion y una función que va a evaluar la respuesta 
 		geocoder.geocode( {'address': direccion.value}, 
 						function(resultado, status)
 						{
+							alert('entra');
 							//si la respuesta es ok
 							if(status == google.maps.GeocoderStatus.OK)
 							{
 								//centro el mapa en la dire y agrego un marcador
 								map.setCenter(resultado[0].geometry.location);
-						        var marker = new google.maps.Marker({
+						        var markerDest = new google.maps.Marker({
 						            map: map,
+						            icon: 'dest.png',
 						            position: resultado[0].geometry.location
 						        });
-						        var msg = document.getElementById('msg');
-								msg.innerHTML = "La direccion se encontro con exito. Asegurate de que sea la que buscas";
+						        msg.innerHTML = "La direccion se encontro con exito. Asegurate de que sea la que buscas";
 							}
 							else
 							{
-								var msg = document.getElementById('msg');
 								msg.innerHTML = "No podemos encontrar la direcci&oacute;n, error: " + status;
 							}
 						}
@@ -139,7 +138,7 @@
     <form>
 		<label for="direccion">Ingresa el destino</label>
 		<input type="text" id="direccion">
-		<button id="go">Go!</button>
+		<button type="button" id="go">Go!</button>
 	</form>
     <div id="map_canvas" style="width: 100%; height: 50%">
 		
