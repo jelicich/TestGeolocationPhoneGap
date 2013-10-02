@@ -8,6 +8,7 @@
   #map_canvas { height: 100% }
 </style>
 	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+	<!--<script type="text/javascript" charset="utf-8" src="cordova-2.0.0.js"></script>-->
 	<script type="text/javascript"
       src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDoxaPf8cHGErybT2CT0gr-znH7IiEHHYM&sensor=true">
     </script>
@@ -18,14 +19,15 @@
 	{
 		var div = document.getElementById('result');
 		var direccion = document.getElementById('direccion');
-		var go = document.getElementById('go');
-		var geocoder = new google.maps.Geocoder();
-		go.onclick = codeAddress;
+		
 	};
 	
 	document.addEventListener("deviceready",function()
 	{
 		navigator.geolocation.watchPosition(mirando, error, {frequency: 1000});
+		var go = document.getElementById('go');
+		var geocoder = new google.maps.Geocoder();
+		go.onclick = codeAddress;
 
 	}, false);
 	
