@@ -42,6 +42,34 @@
 		//imprimo el mapa en el div y le paso como parametro las opciones definidas arriba.
 		var map = new google.maps.Map(document.getElementById("map_canvas"),mapOptions);
 		
+		//defino los marcadores
+		var markers = [
+			['Posicion Actual', posicion.coords.latitude, posicion.coords.longitude, actual],
+			['Destino', -38.442157, -63.622274, 'dest.png']
+		];
+
+		//los seteo
+		var infowindow = new google.maps.InfoWindow(), marker, i;
+		for (i = 0; i < markers.length; i++) {  
+		    marker = new google.maps.Marker({
+		        position: new google.maps.LatLng(markers[i][1], markers[i][2]),
+		        icon: markers[i][3],
+		        map: map
+		    });
+		    google.maps.event.addListener(marker, 'click', (function(marker, i) {
+		        return function() {
+		            infowindow.setContent(markers[i][0]);
+		            infowindow.open(map, marker);
+		        }
+		    })(marker, i));
+		}
+
+
+
+
+
+		/*
+
 		//le pongo el marcador actual
 		var marker = new google.maps.Marker({
 	      position: currentLatLng,
@@ -55,8 +83,10 @@
 	  	var beachMarker = new google.maps.Marker({
 		      position: plaza,
 		      map: map,
-		      icon: dest
+		      icon: dest,
+		      title: 'Destino'
 		  });
+		*/
 	}
 
 	function error()
