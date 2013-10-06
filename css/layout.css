@@ -397,8 +397,8 @@ input[type="color"],
   }
 
   label{
-    font-size: 12px;
-    margin-bottom: 1.5%;
+    font-size: 14px;
+    margin-bottom: 1%;
   }
 
   form{
@@ -415,12 +415,16 @@ input[type="color"],
 
 /* Crappy android - Mobile Portrait Size */
 @media only screen and (max-width: 320px) {
+  label{
+    font-size: 12px;
+  }
+
   form{
-    height: 25%;
+    height: 20%;
   }
   
   #map_canvas{
-    height: 75%;
+    height: 80%;
   }
 
   #content{
