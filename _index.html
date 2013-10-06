@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Geolocation</title>
+<style type="text/css">
+  html { height: 100% }
+  body { height: 100%; margin: 0; padding: 0 }
+  #map_canvas { height: 100% }
+</style>
+	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+	<!--<script type="text/javascript" charset="utf-8" src="cordova-2.0.0.js"></script>-->
+	<script type="text/javascript"
+      src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDoxaPf8cHGErybT2CT0gr-znH7IiEHHYM&sensor=true">
+    </script>
+    <script type="text/javascript" charset="utf-8">
+
+	
+	window.onload = function()
+	{
+		var div = document.getElementById('result');
+		var direccion = document.getElementById('direccion');
+		var go = document.getElementById('go');
+		go.onclick = codeAddress;
+		
+	};
+	
+	document.addEventListener("deviceready",function()
+	{
+		navigator.geolocation.watchPosition(mirando, error, {frequency: 1000});
+	}, false);
+	
+	
+	function mirando(posicion)
+	{
+		//result.innerHTML = "Latitud " + posicion.coords.latitude + ". Longitud " + posicion.coords.longitude;
+		var currentLatLng = new google.maps.LatLng(posicion.coords.latitude, posicion.coords.longitude);
+		var mapOptions = {};
+		var mapOptions = 
+		{
+			center: currentLatLng,
+			zoom: 13,
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
+		
+		//imprimo el mapa en el div y le paso como parametro las opciones definidas arriba.
+		map = new google.maps.Map(document.getElementById("map_canvas"),mapOptions);
+		
+		/* INTENTO DE PONER VARIOS MARCADOES DE UNA */
+		/*
+
+		//defino los marcadores
+		var markers = [
+			['Destino', '-38.442157', '-63.622274', 'dest.png'],
+			['Posicion Actual', posicion.coords.latitude, posicion.coords.longitude, 'actual.png']
+		];
+
+		//los seteo
+		var infowindow = new google.maps.InfoWindow(), marker, i;
+		for (i = 0; i < markers.length; i++) {  
+		    marker = new google.maps.Marker({
+		        position: new google.maps.LatLng(markers[i][1], markers[i][2]),
+		        icon: markers[i][3],
+		        map: map
+		    });
+		    google.maps.event.addListener(marker, 'click', (function(marker, i) {
+		        return function() {
+		            infowindow.setContent(markers[i][0]);
+		            infowindow.open(map, marker);
+		        }
+		    })(marker, i));
+		}
+
+
+		*/
+
+
+		//le pongo el marcador actual
+		var marker = new google.maps.Marker({
+	      position: currentLatLng,
+	      map: map,
+	      icon: 'img/actual.png',
+	      title: 'Posicion Actual'
+	  	});
+	  	
+	  	/*
+	  	//le pongo el marcador de destino
+		var dest = 'dest.png';
+		var plaza = new google.maps.LatLng(-38.442157,-63.622274);
+	  	var beachMarker = new google.maps.Marker({
+		      position: plaza,
+		      map: map,
+		      icon: dest,
+		      title: 'Destino'
+		  });
+		*/
+	}
+
+	function error()
+	{
+		alert('No se pudo ubicar');
+	}
+
+	function codeAddress()
+	{
+		var geocoder = new google.maps.Geocoder();
+		var msg = document.getElementById('msg');
+		//ejecuto el metodo geocode de gmaps que recibe 2 parametros, la direccion y una función que va a evaluar la respuesta 
+		geocoder.geocode( {'address': direccion.value}, 
+						function(resultado, status)
+						{
+							//si la respuesta es ok
+							if(status == google.maps.GeocoderStatus.OK)
+							{
+								//centro el mapa en la dire y agrego un marcador
+								map.setCenter(resultado[0].geometry.location);
+						        var markerDest = new google.maps.Marker({
+						            map: map,
+						            icon: 'img/dest.png',
+						            position: resultado[0].geometry.location
+						        });
+						        msg.innerHTML = "La direccion se encontro con exito. Asegurate de que sea la que buscas";
+							}
+							else
+							{
+								msg.innerHTML = "No podemos encontrar la direcci&oacute;n, error: " + status;
+							}
+						}
+						);
+	}
+
+
+
+    </script>
+  </head>
+  <body>
+    <div id="result"></div>
+    <form>
+		<label for="direccion">Ingresa el destino</label>
+		<input type="text" id="direccion">
+		<button type="button" id="go">Go!</button>
+	</form>
+    <div id="map_canvas" style="width: 100%; height: 50%">
+		
+	</div>
+	
+	<p id="msg"></p>
+  </body>
+</html>
