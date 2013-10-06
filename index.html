@@ -29,7 +29,9 @@ window.onload = function()
 	var direccion = document.getElementById('direccion');
 	var go = document.getElementById('go');
 	go.onclick = codeAddress;
-	
+	var windowHeight = window.innerHeight;
+	var wrap = document.getElementById('wrap');
+	wrap.style.minHeight = wrap + 'px';
 };
 
 document.addEventListener("deviceready",function()

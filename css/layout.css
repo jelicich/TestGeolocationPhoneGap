@@ -343,6 +343,7 @@ input[type="color"],
   #info{
     padding:20%;
   }
+
 }
 
 /* Tablet Portrait size to standard 960 (devices and browsers) */
@@ -381,6 +382,7 @@ input[type="color"],
   #map_canvas{
     height: 75%;
   }
+  
 }
 
 /* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
@@ -410,7 +412,6 @@ input[type="color"],
     height: 82.5%;
   }
 
-
 }
 
 /* Crappy android - Mobile Portrait Size */
@@ -434,37 +435,9 @@ input[type="color"],
   #footer{
     height: 10%;
   }
-}
-
-/* Crappy android - Mobile Portrait Size */
-@media only screen and (max-width: 239px) {
-  label, input[type="text"]{
-    font-size: 12px;
-  }
-
-  #map_canvas{
-    height: 80%;
-  }
-
-  form{
-    height: 20%;
-  }
-
-  #header{
-    height: 12.5%;
-  }
-
-  #footer{
-    height: 9.5%;
-  }
 
   #info{
-    padding:10%;
+    padding:30%;
   }
-  
-  button{
-    font-size: 12px;
-  }
-
 }
 
