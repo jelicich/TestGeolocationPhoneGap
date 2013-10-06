@@ -26,6 +26,6 @@
 	<feature name="http://api.phonegap.com/1.0/notification"/>
 	<feature name="http://api.phonegap.com/1.0/accelerometer"/>
 
-    <preference name="orientation" value="landscape" />
-    
+    <preference name="orientation" value="portrait" />
+
 </widget>
