@@ -106,11 +106,13 @@ function mirando(posicion)
 	*/
 }
 
+//Se ejecuta cuando no encuentra la posicion actual
 function error()
 {
 	alert('No se pudo ubicar');
 }
 
+//se ejecuta cuando hace clic en go!
 function codeAddress()
 {
 	var geocoder = new google.maps.Geocoder();
@@ -121,21 +123,29 @@ function codeAddress()
 						//si la respuesta es ok
 						if(status == google.maps.GeocoderStatus.OK)
 						{
+							//si existe markerDest borro el marcador
+							if(typeof markerDest == 'object')
+							{
+								markerDest.setMap(null);
+							}
+							
 							//centro el mapa en la dire y agrego un marcador
 							map.setCenter(resultado[0].geometry.location);
-					        var markerDest = new google.maps.Marker({
+					        markerDest = new google.maps.Marker({
 					            map: map,
 					            icon: 'img/dest.png',
 					            position: resultado[0].geometry.location
 					        });
-					        
+					        //console.log(typeof(markerDest));
+
 					        //creo los botones
-					        var despertarme = document.createElement('li');
+					        despertarme = document.createElement('li');
 					        despertarme.id = 'despertarme';
 					        despertarme.innerHTML = '<span>DESPERTARME!</span>';
-					        var modificar = document.createElement('li');
+					        modificar = document.createElement('li');
 					        modificar.id = 'modificar';
 					        modificar.innerHTML = '<span>MODIFICAR DESTINO<span>';
+					        modificar.onclick = borrarDestino;
 					        //los imprimo
 					        var liInfo = document.getElementById('li-info');
 					        liInfo.parentNode.insertBefore(despertarme,liInfo);
@@ -151,6 +161,19 @@ function codeAddress()
 						}
 					}
 					);
+}
+
+function borrarDestino()
+{
+	markerDest.setMap(null);
+	despertarme.parentNode.removeChild(despertarme);
+	modificar.parentNode.removeChild(modificar);
+	direccion.value="";
+}
+
+function bondinap()
+{
+	
 }
 
 
