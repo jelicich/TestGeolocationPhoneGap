@@ -20,6 +20,9 @@
 <script type="text/javascript"
   src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDoxaPf8cHGErybT2CT0gr-znH7IiEHHYM&sensor=true">
 </script>
+<script type="text/javascript" 
+	src="http://maps.google.com/maps/api/js?sensor=false&v=3&libraries=geometry">
+</script>
 <script type="text/javascript" charset="utf-8">
 
 
@@ -44,7 +47,7 @@ document.addEventListener("deviceready",function()
 function mirando(posicion)
 {
 	//result.innerHTML = "Latitud " + posicion.coords.latitude + ". Longitud " + posicion.coords.longitude;
-	var currentLatLng = new google.maps.LatLng(posicion.coords.latitude, posicion.coords.longitude);
+	currentLatLng = new google.maps.LatLng(posicion.coords.latitude, posicion.coords.longitude);
 	var mapOptions = {};
 	var mapOptions = 
 	{
@@ -130,6 +133,7 @@ function codeAddress()
 							}
 							
 							//centro el mapa en la dire y agrego un marcador
+							destLatLng = resultado[0].geometry.location;
 							map.setCenter(resultado[0].geometry.location);
 					        markerDest = new google.maps.Marker({
 					            map: map,
@@ -142,6 +146,7 @@ function codeAddress()
 					        despertarme = document.createElement('li');
 					        despertarme.id = 'despertarme';
 					        despertarme.innerHTML = '<span>DESPERTARME!</span>';
+					        despertarme.onclick = bondinap;
 					        modificar = document.createElement('li');
 					        modificar.id = 'modificar';
 					        modificar.innerHTML = '<span>MODIFICAR DESTINO<span>';
@@ -150,6 +155,9 @@ function codeAddress()
 					        var liInfo = document.getElementById('li-info');
 					        liInfo.parentNode.insertBefore(despertarme,liInfo);
 					        liInfo.parentNode.insertBefore(modificar,liInfo);
+					        go.style.display = 'none';
+					        direccion.disabled = 'disabled';
+					        direccion.style.width = '100%';
 						}
 						else
 						{
@@ -169,11 +177,22 @@ function borrarDestino()
 	despertarme.parentNode.removeChild(despertarme);
 	modificar.parentNode.removeChild(modificar);
 	direccion.value="";
+	go.style.display = 'block';
+	direccion.removeAttribute('disabled');
+	direccion.style.width ='85%';
 }
 
 function bondinap()
 {
-	
+	distancia = google.maps.geometry.spherical.computeDistanceBetween(currentLatLng, destLatLng);
+	distancia = distancia.toFixed();
+	if(distancia < 500)
+	{
+		navigator.notification.beep(5);
+		navigator.notification.vibrate(4000);
+		return;
+	}
+	timeout = setTimeout(bondinap,1000);
 }
 
 
