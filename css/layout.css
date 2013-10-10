@@ -69,9 +69,23 @@ ul{
 }
 
 #despertarme{
-  color: white;
+  color: #c2d72d;
+  text-transform: uppercase;
+  font-weight: bold;
   float: left;
-  width: 30%;
+  width: 39%;
+  list-style-type: none;
+  margin: 0;
+  padding: 0.5%;
+  font-size: 12px;
+  background: url('../img/bg-separador.png') right repeat-y;
+  position: relative;
+}
+
+#despertarme span{
+  position: absolute;
+  top: 50%;
+  line-height: 0;
 }
 
 #footer{
@@ -127,9 +141,23 @@ ul{
 }
 
 #modificar{
-  color:white;
+  color: #e3a80c;
   float: left;
-  width: 30%;
+  text-transform: uppercase;
+  font-weight: bold;
+  width: 51%;
+  list-style-type: none;
+  margin: 0;
+  padding: 0.5%;
+  padding-left: 3%;
+  font-size: 12px;
+  position: relative;
+}
+
+#modificar span{
+  position: absolute;
+  top: 50%;
+  line-height: 0;
 }
 
 #wrap{
@@ -452,4 +480,15 @@ input[type="color"],
     padding:30%;
   }
 }
+
+@media only screen and (max-width: 240px) {
+  #despertarme{
+    font-size: 8px;
+  }
+
+  #modificar{
+    font-size: 8px
+  }
+}
+
 
