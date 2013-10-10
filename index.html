@@ -114,8 +114,7 @@ function error()
 function codeAddress()
 {
 	var geocoder = new google.maps.Geocoder();
-	var msg = document.getElementById('msg');
-	//ejecuto el metodo geocode de gmaps que recibe 2 parametros, la direccion y una función que va a evaluar la respuesta 
+	//ejecuto el metodo geocode de gmaps que recibe 2 parametros (objetos json), la direccion y una función que va a evaluar la respuesta 
 	geocoder.geocode( {'address': direccion.value}, 
 					function(resultado, status)
 					{
@@ -129,11 +128,26 @@ function codeAddress()
 					            icon: 'img/dest.png',
 					            position: resultado[0].geometry.location
 					        });
-					        msg.innerHTML = "La direccion se encontro con exito. Asegurate de que sea la que buscas";
+					        
+					        //creo los botones
+					        var despertarme = document.createElement('li');
+					        despertarme.id = 'despertarme';
+					        despertarme.innerHTML = 'Despertarme!';
+					        var modificar = document.createElement('li');
+					        modificar.id = 'modificar';
+					        modificar.innerHTML = 'Modificar Destino';
+					        //los imprimo
+					        var liInfo = document.getElementById('li-info');
+					        liInfo.insertBefore(despertarme,liInfo);
+					        liInfo.insertBefore(moficiar,liInfo);
 						}
 						else
 						{
-							msg.innerHTML = "No podemos encontrar la direcci&oacute;n, error: " + status;
+							var liMsg = document.createElement('li');
+							liMsg.id = 'error';
+							liMsg.innerHTML = "No podemos encontrar la direcci&oacute;n, error: " + status;
+							var liInfo = document.getElementById('li-info');
+					        liInfo.insertBefore(liMsg,liInfo);
 						}
 					}
 					);
@@ -167,7 +181,7 @@ function codeAddress()
 		<div id="footer">
 			<div class="container">
 				<ul>
-					<li id="li-msg"><p id="msg"></p></li>
+					
 					<li id="li-info"><a href="#" id="info"><img src="img/info.png"/></a></li>
 				</ul>
 				<br clas="clear">

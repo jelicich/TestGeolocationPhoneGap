@@ -68,6 +68,12 @@ ul{
    padding-top: 1%;
 }
 
+#despertarme{
+  color: white;
+  float: left;
+  width: 30%;
+}
+
 #footer{
    position:fixed;
    bottom:0;
@@ -115,9 +121,15 @@ ul{
 
 #map_canvas{
 	display: block;
-	background: red;
+	background: url('../img/loader.gif') center no-repeat #343434;
   height: 85%;
   margin: 0 -10%;
+}
+
+#modificar{
+  color:white;
+  float: left;
+  width: 30%;
 }
 
 #wrap{
