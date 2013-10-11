@@ -8,8 +8,8 @@
 
 
 
-<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
-<!--<script type="text/javascript" charset="utf-8" src="cordova-2.0.0.js"></script>-->
+<!--<script type="text/javascript" charset="utf-8" src="cordova.js"></script>-->
+<script type="text/javascript" charset="utf-8" src="cordova-2.0.0.js"></script>
 <script type="text/javascript"
   src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDoxaPf8cHGErybT2CT0gr-znH7IiEHHYM&sensor=true">
 </script>
@@ -33,9 +33,9 @@ window.onload = function()
 
 document.addEventListener("deviceready",function()
 {
-	navigator.geolocation.getCurrentPosition(mirando,error);
-	//navigator.geolocation.watchPosition(mirando, error, {frequency: 1000});
+	navigator.geolocation.watchPosition(mirando, error, {frequency: 1000});
 }, false);
+
 
 function mirando(posicion)
 {
@@ -53,21 +53,14 @@ function mirando(posicion)
 	map = new google.maps.Map(document.getElementById("map_canvas"),mapOptions);
 	
 	//le pongo el marcador actual
-	marker = new google.maps.Marker({
+	var marker = new google.maps.Marker({
       position: currentLatLng,
       map: map,
       icon: 'img/actual.png',
       title: 'Posicion Actual'
   	});
   	
-  	navigator.geolocation.watchPosition(actualizarMarcador, error, {frequency: 2000});
-}
-
-function actualizarMarcador(posicion)
-{
-	currentLatLng = new google.maps.LatLng(posicion.coords.latitude, posicion.coords.longitude);
-	map.setCenter(currentLatLng);
-	marker.setPosition(currentLatLng);
+  	
 }
 
 //Se ejecuta cuando no encuentra la posicion actual
