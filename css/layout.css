@@ -12,7 +12,7 @@ html, body{
    font-family: Arial, sans-serif;
 }
 
-button{
+button#go{
 	width: 9.5%;
 	/*margin-top:-10px !important;*/
   height: 50% !important;
@@ -148,12 +148,27 @@ ul{
   position: absolute;
   top:0;
   left: 0;
-  opacity: 0.8;
+  background: url('../img/bg-modal.png');
   color:#fff;
+}
+
+#modal div{
+  position: absolute;
+  top:50%;
+  left: 50%;
+  margin-top: -60px;
+  margin-left: -40%;
+  width: 80%;
+  height: 120px;
 }
 
 #modal p{
   text-align: center;
+}
+
+#modal button{
+  display: block;
+  margin: 0 auto;
 }
 
 #modificar{
@@ -443,7 +458,7 @@ input[type="color"],
 
 /* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
 @media only screen and (max-width: 479px) {
-  button{
+  button#go{
     width: 13%;
     margin-left: 2%;
     padding: 1px !important;

@@ -30,6 +30,21 @@ window.onload = function()
 	wrap.style.height = windowHeight + 'px';
 	console.log(wrap);
 	flag = undefined;
+
+	//ELEMENTOS PARA CUANDO ESTA CORRIENDO BONDINAP();
+	modal = document.createElement('div');
+	modal.id = 'modal';
+	contCancelar = document.createElement('div');
+	dormi = document.createElement('p');
+	dormi.innerHTML = 'Clavate una siesta que bondinap te despierta';
+	cancelarSiesta = document.createElement('button');
+	cancelarSiesta.type = 'button';
+	cancelarSiesta.className = 'btn btn-success';
+	cancelarSiesta.innerHTML = 'Cancelar siesta';
+	cancelarSiesta.onclick = stopBondinap;
+	contCancelar.appendChild(dormi);
+	contCancelar.appendChild(cancelarSiesta);
+	modal.appendChild(contCancelar);
 };
 
 document.addEventListener("deviceready",function()
@@ -111,20 +126,13 @@ function codeAddress()
 					        despertarme.innerHTML = '<span>DESPERTARME!</span>';
 					        despertarme.onclick = function()
 					        					{
-					        						//funcion que ejecuta bondinap (recursiva) y crea la ventana modal. cuando hace clic en el modal deja de ejecutar bondinap
+					        						//funcion que ejecuta bondinap (recursiva) y crea la ventana modal. cuando hace clic en el boton cancelar siesta deja de ejecutar bondinap
+					        						
+					        						//flag sirve para loopear la funcion bondinap
 					        						flag = true;
-					        						var modal = document.createElement('div');
-													modal.id = 'modal';
-													modal.innerHTML = '<p>Clavate una siesta que bondinap te despierta</p><p>Cancelar siesta</p>';
-													modal.onclick = function()
-													{
-														//para cerrar bondinap
-														modal.parentNode.removeChild(modal);
-														flag = false;
-														clearInterval(timeout);
-													};
-													document.body.appendChild(modal);
 					        						bondinap();
+					        						
+													document.body.appendChild(modal);
 					        					};
 					        modificar = document.createElement('li');
 					        modificar.id = 'modificar';
@@ -167,19 +175,40 @@ function bondinap()
 	{
 		return;
 	}
-	//flag = true;
-	distancia = google.maps.geometry.spherical.computeDistanceBetween(currentLatLng, destLatLng);
-	distancia = distancia.toFixed();
-	if(distancia < 500)
+	else
 	{
-		navigator.notification.beep(5);
-		navigator.notification.vibrate(4000);
-		return;
+		//flag = true;
+		//evaluo la distancia entre el destino y la posicion local
+		distancia = google.maps.geometry.spherical.computeDistanceBetween(currentLatLng, destLatLng);
+		distancia = distancia.toFixed();
+		//si es menor a 500m hago sonar la alarma
+		if(distancia < 500)
+		{
+			navigator.notification.vibrate(3000);
+			src = 'sound/welcome.mp3'
+			sonido = new Media(src);
+			sonido.play();
+			dormi.innerHTML = 'Llegamos, termino la siesta';
+			cancelarSiesta.innerHTML = 'Apagar';
+			cancelarSiesta.onclick = function()
+			{
+				sonido.stop;
+				stopBondinap();
+			};
+			return;
+		}
+		timeout = setTimeout(bondinap,1000);	
 	}
-	timeout = setTimeout(bondinap,1000);
-	console.log('corriendo');
+	console.log('corriendo bondinap')	
 }
 
+function stopBondinap()
+{
+	//para cerrar bondinap
+	modal.parentNode.removeChild(modal);
+	flag = false;
+	clearInterval(timeout);
+}
 
 
 </script>
