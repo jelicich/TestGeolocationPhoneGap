@@ -8,8 +8,8 @@
 
 
 
-<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
-<!--<script type="text/javascript" charset="utf-8" src="cordova-2.0.0.js"></script>-->
+<!--<script type="text/javascript" charset="utf-8" src="cordova.js"></script>-->
+<script type="text/javascript" charset="utf-8" src="cordova-2.0.0.js"></script>
 <script type="text/javascript"
   src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDoxaPf8cHGErybT2CT0gr-znH7IiEHHYM&sensor=true">
 </script>
@@ -29,6 +29,7 @@ window.onload = function()
 	var wrap = document.getElementById('wrap');
 	wrap.style.height = windowHeight + 'px';
 	console.log(wrap);
+	flag = undefined;
 };
 
 document.addEventListener("deviceready",function()
@@ -37,6 +38,7 @@ document.addEventListener("deviceready",function()
 	//navigator.geolocation.watchPosition(mirando, error, {frequency: 1000});
 }, false);
 
+//funcion que crea el mapa y setea el marcador en la posición inicial. al final ejecuta el watchposition para ir actualizando el marcador cada 2 segundos
 function mirando(posicion)
 {
 	
@@ -107,7 +109,23 @@ function codeAddress()
 					        despertarme = document.createElement('li');
 					        despertarme.id = 'despertarme';
 					        despertarme.innerHTML = '<span>DESPERTARME!</span>';
-					        despertarme.onclick = bondinap;
+					        despertarme.onclick = function()
+					        					{
+					        						//funcion que ejecuta bondinap (recursiva) y crea la ventana modal. cuando hace clic en el modal deja de ejecutar bondinap
+					        						flag = true;
+					        						var modal = document.createElement('div');
+													modal.id = 'modal';
+													modal.innerHTML = '<p>Clavate una siesta que bondinap te despierta</p><p>Cancelar siesta</p>';
+													modal.onclick = function()
+													{
+														//para cerrar bondinap
+														modal.parentNode.removeChild(modal);
+														flag = false;
+														clearInterval(timeout);
+													};
+													document.body.appendChild(modal);
+					        						bondinap();
+					        					};
 					        modificar = document.createElement('li');
 					        modificar.id = 'modificar';
 					        modificar.innerHTML = '<span>MODIFICAR DESTINO<span>';
@@ -145,6 +163,11 @@ function borrarDestino()
 
 function bondinap()
 {
+	if(flag == false)
+	{
+		return;
+	}
+	//flag = true;
 	distancia = google.maps.geometry.spherical.computeDistanceBetween(currentLatLng, destLatLng);
 	distancia = distancia.toFixed();
 	if(distancia < 500)
@@ -154,6 +177,7 @@ function bondinap()
 		return;
 	}
 	timeout = setTimeout(bondinap,1000);
+	console.log('corriendo');
 }
 
 
