@@ -31,4 +31,6 @@
     <preference name="orientation" value="portrait" />
     <preference name="fullscreen" value="true" />
 
+    <plugin name="BackgroundServicePlugin" value="com.red_folder.phonegap.plugin.backgroundservice.BackgroundServicePlugin"/>
+
 </widget>
